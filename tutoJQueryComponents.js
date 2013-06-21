@@ -1,7 +1,20 @@
 if (Meteor.isClient) {
-  Template.JQueryContainer.rendered(function () {
-    console.log('dom found ? ', $(".alert"));
+  Session.setDefault('rerender', 0);
+
+  Template.JQueryContainer.rendered = function () {
     $(".alert").alert();
+  };
+
+  Template.JQueryContainer.helpers({
+    helperThatMustReRenderTplOnSessionChange: function () {
+	return Session.get('rerender');
+    }
+  });
+
+  Template.JQueryContainer.events({
+    'click #btnChangeSession': function () {
+	Session.set('rerender', Session.get('rerender') + 1);
+    }
   });
 }
 
